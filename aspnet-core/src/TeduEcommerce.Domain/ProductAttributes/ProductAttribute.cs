@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace TeduEcommerce.Attributes
+namespace TeduEcommerce.ProductAttributes
 {
-    public class Attribute : CreationAuditedAggregateRoot<Guid>
+    public class ProductAttribute : CreationAuditedAggregateRoot<Guid>
     {
         public Guid Code { get; set; }
         public AttributeType DataType { get; set; }
