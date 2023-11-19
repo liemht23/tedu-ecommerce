@@ -1,0 +1,87 @@
+<p-panel header="List all products">
+  <!--Search (Search panel)-->
+  <div class="grid">
+    <div class="col-4">
+      <button pButton type="button" (click)="showAddModal()" icon="fa fa-plus" iconPos="left" label="Add"></button>
+    </div>
+    <div class="col-8">
+      <div class="formgroup-inline">
+        <div class="field">
+          <label for="txt-keyword" class="p-sr-only">Keyword</label>
+          <input id="txt-keyword" pInputText type="text" placeholder="Enter keyword" />
+        </div>
+        <div class="field">
+          <p-dropdown
+            [options]="productCategories"
+            [(ngModel)]="categoryId"
+            placeholder="Select a Category"
+          ></p-dropdown>
+        </div>
+        <button
+          type="button"
+          pButton
+          (click)="loadData()"
+          icon="fa fa-search"
+          iconPos="left"
+          label="Search"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <!--Table-->
+  <p-table
+    #pnl
+    [value]="items"
+    styleClass="p-datatable-striped"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Code</th>
+        <th>SKU</th>
+        <th>Name</th>
+        <th>Product Type</th>
+        <th>Category</th>
+        <th>Order</th>
+        <th>Display</th>
+        <th>Is Active</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>{{ product.code }}</td>
+        <td>{{ product.sku }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.productType }}</td>
+        <td>{{ product.categoryId }}</td>
+        <td>{{ product.sortOrder }}</td>
+        <td>{{ product.visiblity }}</td>
+        <td>{{ product.isActive }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div style="text-align: left">Total records: {{ totalCount | number }}</div>
+    </ng-template>
+  </p-table>
+
+  <!--Paginator-->
+  <p-paginator
+    [rows]="maxResultCount"
+    [totalRecords]="totalCount"
+    (onPageChange)="pageChanged($event)"
+    [rowsPerPageOptions]="[10, 20, 30, 50, 100]"
+  ></p-paginator>
+
+  <!--Block UI-->
+  <p-blockUI [target]="pnl" [blocked]="blockedPanel">
+    <div class="card">
+      <p-progressSpinner
+        styleClass="w-4rem h-4rem"
+        strokeWidth="8"
+        fill="var(--surface-ground)"
+        animationDuration=".5s"
+      ></p-progressSpinner>
+    </div>
+  </p-blockUI>
+</p-panel>

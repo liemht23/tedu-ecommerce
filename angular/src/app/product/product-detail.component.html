@@ -1,0 +1,159 @@
+<form [formGroup]="form" skipValidation (ngSubmit)="saveChange()">
+  <p-panel #pnl header="List all products">
+    <!--Form Grid-->
+    <div class="formgrid grid">
+      <div class="field col-12">
+        <label for="name" class="block">Name <span class="required">*</span></label>
+        <input
+          id="name"
+          pInputText
+          (keyup)="generateSlug()"
+          type="text"
+          class="w-full"
+          formControlName="name"
+          placeholder="Enter Name"
+        />
+        <app-validation-message
+          [entityForm]="form"
+          fieldName="name"
+          [validationMessages]="validationMessages"
+        ></app-validation-message>
+      </div>
+      <div class="field col-12">
+        <label for="code" class="block">Code <span class="required">*</span></label>
+        <input id="code" pInputText type="text" formControlName="code" placeholder="Enter Code" />
+        <app-validation-message
+          [entityForm]="form"
+          fieldName="code"
+          [validationMessages]="validationMessages"
+        ></app-validation-message>
+      </div>
+      <div class="field col-12">
+        <label for="slug" class="block">Slug <span class="required">*</span></label>
+        <input
+          id="slug"
+          pInputText
+          type="text"
+          class="w-full"
+          formControlName="slug"
+          placeholder="Enter Slug"
+        />
+        <app-validation-message
+          [entityForm]="form"
+          fieldName="slug"
+          [validationMessages]="validationMessages"
+        ></app-validation-message>
+      </div>
+      <div class="field col-12">
+        <label for="sku" class="block">SKU <span class="required">*</span></label>
+        <input id="sku" pInputText type="text" class="w-full" formControlName="sku" />
+        <app-validation-message
+          [entityForm]="form"
+          fieldName="sku"
+          [validationMessages]="validationMessages"
+        ></app-validation-message>
+      </div>
+      <div class="field col-12">
+        <label for="manufacturerId" class="block">Manufacturer <span class="required">*</span></label>
+        <p-dropdown
+          [options]="manufacturers"
+          formControlName="manufacturerId"
+          placeholder="Enter Manufacturer"
+          [showClear]="true"
+          autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
+        <app-validation-message
+          [entityForm]="form"
+          fieldName="manufacturerId"
+          [validationMessages]="validationMessages"
+        ></app-validation-message>
+      </div>
+      <div class="field col-12">
+        <label for="categoryId" class="block">Categories <span class="required">*</span></label>
+        <p-dropdown
+          [options]="productCategories"
+          formControlName="categoryId"
+          placeholder="Enter Category"
+          [showClear]="true"
+          autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
+        <app-validation-message
+          [entityForm]="form"
+          fieldName="categoryId"
+          [validationMessages]="validationMessages"
+        ></app-validation-message>
+      </div>
+      <div class="field col-12">
+        <label for="productType" class="block">Product Type <span class="required">*</span></label>
+        <p-dropdown
+          [options]="productTypes"
+          formControlName="productType"
+          placeholder="Enter Product Type"
+          [showClear]="true"
+          autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
+        <app-validation-message
+          [entityForm]="form"
+          fieldName="productType"
+          [validationMessages]="validationMessages"
+        ></app-validation-message>
+      </div>
+      <div class="field col-12">
+        <label for="sortOrder" class="block">Sort Order <span class="required">*</span></label>
+        <p-inputNumber
+          inputId="sortOrder"
+          formControlName="sortOrder"
+          placeholder="Enter Sort Order"
+        ></p-inputNumber>
+        <app-validation-message
+          [entityForm]="form"
+          fieldName="sortOrder"
+          [validationMessages]="validationMessages"
+        ></app-validation-message>
+      </div>
+      <div class="field col-12">
+        <label for="sellPrice" class="block">Sell Price <span class="required">*</span></label>
+        <p-inputNumber formControlName="sellPrice"></p-inputNumber>
+        <app-validation-message
+          [entityForm]="form"
+          fieldName="sellPrice"
+          [validationMessages]="validationMessages"
+        ></app-validation-message>
+      </div>
+      <div class="field-checkbox col-12 md:col-3">
+        <p-checkbox formControlName="visibility" binary="true" id="visibility"></p-checkbox>
+        <label for="visibility">Visibility</label>
+      </div>
+      <div class="field-checkbox col-12 md:col-3">
+        <p-checkbox formControlName="isActive" binary="true" id="isActive"></p-checkbox>
+        <label for="isActive">Is Active</label>
+      </div>
+      <div class="field col-12">
+        <label for="seoMetaDescription" class="block">SEO Description</label>
+        <textarea
+          id="seoMetaDescription"
+          pInputTextarea
+          class="w-full"
+          formControlName="seoMetaDescription"
+        ></textarea>
+      </div>
+      <div class="field col-12">
+        <label for="description" class="block">Description</label>
+        <p-editor formControlName="description" [style]="{'height':'320px'}"></p-editor>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <button type="submit" [disabled]="!form.valid || btnDisabled" pButton icon="fa fa-save" iconPos="left" label="Save"></button>
+    </ng-template>
+
+    <!--Block UI-->
+    <p-blockUI [target]="pnl" [blocked]="blockedPanel">
+      <div class="card">
+        <p-progressSpinner
+          styleClass="w-4rem h-4rem"
+          strokeWidth="8"
+          fill="var(--surface-ground)"
+          animationDuration=".5s"
+        ></p-progressSpinner>
+      </div>
+    </p-blockUI>
+  </p-panel>
+</form>
