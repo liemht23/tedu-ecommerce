@@ -1,12 +1,12 @@
 import { mapEnumToOptions } from '@abp/ng.core';
 
 export enum ProductType {
-  Single = 0,
-  Configurable = 1,
-  Bundle = 2,
-  Grouped = 3,
-  Virtual = 4,
-  Downloadable = 5,
+  Single = 1,
+  Configurable = 2,
+  Bundle = 3,
+  Grouped = 4,
+  Virtual = 5,
+  Downloadable = 6,
 }
 
 export const productTypeOptions = mapEnumToOptions(ProductType);

@@ -59,7 +59,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buildForm();
     this.loadProductTypes();
+    this.initFormData();
+  }
 
+  initFormData() {
     // Load data to form
     var productCategories = this.productCategoryService.getListAll();
     var manufacturers = this.manufacturerService.getListAll();
@@ -78,15 +81,15 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
           productCategories.forEach(element => {
             this.productCategories.push({
               value: element.id,
-              label: element.name
-            })
+              label: element.name,
+            });
           });
 
           manufacturers.forEach(element => {
             this.manufacturers.push({
               value: element.id,
-              label: element.name
-            })
+              label: element.name,
+            });
           });
 
           // Load edit data to form
@@ -103,7 +106,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   }
 
   generateSlug() {
-    this.form.controls['slug'].setValue(this.utilityService.MakeSeoTitle(this.form.get('name').value));
+    this.form.controls['slug'].setValue(
+      this.utilityService.MakeSeoTitle(this.form.get('name').value)
+    );
   }
 
   loadFormDetails(id: string) {
@@ -134,14 +139,48 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveChange() {}
+  saveChange() {
+    console.log(this.form.value);
+    console.log(this.config.data);
+    this.toggleBlockedUI(true);
+
+    if (this.utilityService.isEmpty(this.config.data?.id) == true) {
+      // Create new product
+      this.productService
+      .create(this.form.value)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: () => {
+          this.toggleBlockedUI(false);
+          this.ref.close(this.form.value);
+        },
+        error: () => {
+          this.toggleBlockedUI(false);
+        }
+      })
+    } else {
+      // Update product
+      this.productService
+      .update(this.config.data?.id, this.form.value)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: () => {
+          this.toggleBlockedUI(false);
+          this.ref.close(this.form.value);        
+        },
+        error: () => {
+          this.toggleBlockedUI(false);
+        }
+      })
+    }
+  }
 
   loadProductTypes() {
     productTypeOptions.forEach(element => {
       this.productTypes.push({
         value: element.value,
-        label: element.key
-      })
+        label: element.key,
+      });
     });
   }
 

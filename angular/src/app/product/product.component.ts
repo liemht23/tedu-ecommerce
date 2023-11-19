@@ -7,6 +7,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { ProductDetailComponent } from './product-detail.component';
 import { NotificationService } from '../shared/services/notification.service';
+import { ProductType } from '@proxy/tedu-ecommerce/products';
 
 @Component({
   selector: 'app-product',
@@ -17,6 +18,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   blockedPanel: boolean = false;
   items: ProductInListDto[] = [];
+  public selectedItems: ProductInListDto[] = [];
   
   // Paging variables
   public skipCount: number = 0;
@@ -90,11 +92,40 @@ export class ProductComponent implements OnInit, OnDestroy {
     ref.onClose.subscribe((data: ProductDto) => {
       if (data) {
         this.loadData();
+        this.selectedItems = [];
         this.notificationService.showSuccess("Add new product successfully");
       }
     })
   }
+
+  showEditModal() {
+    if (this.selectedItems.length == 0) {
+      this.notificationService.showError("You have to select at least one record");
+      return;
+    }
+
+    const id = this.selectedItems[0].id;
+    const ref = this.dialogService.open(ProductDetailComponent, {
+      data: {
+        id: id
+      },
+      header: 'Update product',
+      width: '70%',
+    });
+
+    ref.onClose.subscribe((data: ProductDto) => {
+      if (data) {
+        this.loadData();
+        this.selectedItems = [];
+        this.notificationService.showSuccess("Update product successfully");
+      }
+    })
+  }
   
+  getProductTypeName(value: number) {
+    return ProductType[value];
+  }
+
   private toggleBlockedUI(enabled: boolean) {
     if (enabled == true) {
       this.blockedPanel = true;

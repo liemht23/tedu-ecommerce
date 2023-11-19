@@ -35,6 +35,12 @@ namespace TeduEcommerce.Products
 
             builder.Property(x => x.SeoMetaDescription)
              .HasMaxLength(250);
+
+            builder.Property(x => x.CategoryName)
+             .HasMaxLength(50);
+
+            builder.Property(x => x.CategorySlug)
+             .HasMaxLength(50);
         }
     }
 }
